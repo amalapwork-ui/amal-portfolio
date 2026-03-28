@@ -10,6 +10,11 @@ Single-page portfolio built with React 18 + TypeScript + Vite. All sections are 
 - Path alias `@/` resolves to `src/` (configured in `vite.config.ts` and `tsconfig.json`)
 
 Theme state (dark/light) lives in `ThemeProvider.tsx` via Context API and persists to `localStorage`. Access via the exported hook — do not read `localStorage` directly in components.
+`ThemeProvider` toggles the `.dark` class on `document.documentElement` — this is how Tailwind's dark-mode variant activates.
+
+Two non-obvious shared components:
+- `CustomCursor.tsx` — replaces the system cursor site-wide; the `cursor-none` CSS class in `index.css` hides the default cursor
+- `DinoGame.tsx` — an easter egg mini-game surfaced somewhere in the UI; keep it self-contained with no external state dependencies
 
 ## Build & Development Commands
 
@@ -33,3 +38,7 @@ npx tsc --noEmit  # Type-check without emitting files
 - Tailwind utility classes are the primary styling mechanism. Custom CSS in `index.css` is for design tokens and effects not expressible in Tailwind alone.
 - Animations use **Framer Motion** — do not add raw CSS `@keyframes` for element transitions.
 - Icons come from **lucide-react** — do not introduce a second icon library.
+
+## Commit Guidelines
+
+Use short imperative subject lines (`Add contact form animation`, `Fix navbar scroll behavior`). One commit per logical change.

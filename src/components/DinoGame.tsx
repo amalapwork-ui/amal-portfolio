@@ -17,6 +17,9 @@ const GRAVITY = 0.6;
 const JUMP_VEL = -12;
 
 const DinoGame = () => {
+  // Evaluated once at mount — stable for the session (same pattern as CustomCursor).
+  const isFine = useRef(window.matchMedia("(pointer: fine)").matches);
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [gameState, setGameState] = useState<"idle" | "playing" | "over">("idle");
   const [score, setScore] = useState(0);
@@ -127,6 +130,7 @@ const DinoGame = () => {
   }, [gameState]);
 
   useEffect(() => {
+    if (!isFine.current) return; // touch devices use onTouchStart on the canvas
     const handler = (e: KeyboardEvent) => {
       if (e.code === "Space" || e.code === "ArrowUp") {
         e.preventDefault();
@@ -159,12 +163,16 @@ const DinoGame = () => {
               width={CANVAS_W}
               height={CANVAS_H}
               className="bg-background max-w-full"
+              style={{ aspectRatio: `${CANVAS_W}/${CANVAS_H}` }}
               onClick={() => gameState === "playing" ? jump() : resetGame()}
+              onTouchStart={() => {
+                gameState === "playing" ? jump() : resetGame();
+              }}
             />
             {gameState === "idle" && (
               <div className="absolute inset-0 flex items-center justify-center bg-background/80">
                 <div className="text-center">
-                  <div className="font-mono text-sm text-muted-foreground mb-2">Press SPACE or tap to start</div>
+                  <div className="font-mono text-sm text-muted-foreground mb-2">{isFine.current ? "Press SPACE to start" : "Tap to start"}</div>
                   <div className="font-mono text-[0.55rem] text-muted-foreground">Jump over obstacles!</div>
                 </div>
               </div>
@@ -174,7 +182,7 @@ const DinoGame = () => {
                 <div className="text-center">
                   <div className="font-display text-xl font-bold text-primary mb-1">Game Over</div>
                   <div className="font-mono text-sm text-muted-foreground mb-2">Score: {score}</div>
-                  <div className="font-mono text-[0.55rem] text-muted-foreground">Press SPACE or tap to restart</div>
+                  <div className="font-mono text-[0.55rem] text-muted-foreground">{isFine.current ? "Press SPACE to restart" : "Tap to restart"}</div>
                 </div>
               </div>
             )}

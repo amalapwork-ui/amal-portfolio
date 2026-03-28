@@ -209,6 +209,15 @@ const ProjectsSection = () => {
       );
     }, section); // scope to section for clean ctx.revert()
 
+    // Refresh after all resources load — hero images/fonts above this section can
+    // shift the page height after GSAP records the trigger position, causing the
+    // pin to fire at the wrong scroll offset.
+    if (document.readyState === "complete") {
+      ScrollTrigger.refresh();
+    } else {
+      window.addEventListener("load", () => ScrollTrigger.refresh(), { once: true });
+    }
+
     return () => ctx.revert();
   }, []);
 
