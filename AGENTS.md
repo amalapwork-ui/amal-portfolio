@@ -36,9 +36,9 @@ npx tsc --noEmit  # Type-check without emitting files
 - Component files use PascalCase matching the component name (e.g., `HeroSection.tsx` exports `HeroSection`).
 - No ESLint or Prettier config is present; format consistently with the existing code (2-space indent, single quotes in TSX).
 - Tailwind utility classes are the primary styling mechanism. Custom CSS in `index.css` is for design tokens and effects not expressible in Tailwind alone.
-- Animations use **Framer Motion** — do not add raw CSS `@keyframes` for element transitions.
+- Animations use **Framer Motion** for component transitions and **GSAP** for scroll-driven effects — do not add raw CSS `@keyframes`. Keep responsibilities separate: Framer Motion for enter/exit and state-driven motion, GSAP for timeline/scroll sequences.
 - Icons come from **lucide-react** — do not introduce a second icon library.
 
 ## Commit Guidelines
 
-Use short imperative subject lines (`Add contact form animation`, `Fix navbar scroll behavior`). One commit per logical change.
+Use short lowercase imperative subject lines (`enable game on mobile`, `fix navbar scroll behavior`). One commit per logical change.

@@ -129,9 +129,23 @@ const DinoGame = () => {
     return () => cancelAnimationFrame(animId);
   }, [gameState]);
 
+  // Keyboard handler is scoped via IntersectionObserver — Space/ArrowUp only intercept
+  // page scroll when the game canvas is actually in the viewport. This prevents the
+  // global e.preventDefault() from silently blocking Space-to-scroll elsewhere on the page.
   useEffect(() => {
-    if (!isFine.current) return; // touch devices use onTouchStart on the canvas
+    if (!isFine.current) return;
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    let inView = false;
+    const observer = new IntersectionObserver(
+      ([entry]) => { inView = entry.isIntersecting; },
+      { threshold: 0.1 }
+    );
+    observer.observe(canvas);
+
     const handler = (e: KeyboardEvent) => {
+      if (!inView) return;
       if (e.code === "Space" || e.code === "ArrowUp") {
         e.preventDefault();
         if (gameState === "playing") jump();
@@ -139,7 +153,10 @@ const DinoGame = () => {
       }
     };
     window.addEventListener("keydown", handler);
-    return () => window.removeEventListener("keydown", handler);
+    return () => {
+      window.removeEventListener("keydown", handler);
+      observer.disconnect();
+    };
   }, [gameState, jump, resetGame]);
 
   return (
@@ -158,35 +175,54 @@ const DinoGame = () => {
           </h3>
 
 
-          <div
-            className="relative inline-block border border-border neon-border overflow-hidden"
-            onPointerDown={() => {
-              gameState === "playing" ? jump() : resetGame();
-            }}
-          >
+          <div className="relative inline-block border border-border neon-border overflow-hidden">
+
             <canvas
               ref={canvasRef}
               width={CANVAS_W}
               height={CANVAS_H}
               className="bg-background max-w-full"
-              style={{ aspectRatio: `${CANVAS_W}/${CANVAS_H}` }}
+              style={{
+                aspectRatio: `${CANVAS_W}/${CANVAS_H}`,
+                // "none" → browser won't attempt to interpret the touch as a scroll/pan gesture;
+                // pointerdown fires immediately and reliably on every tap without 300ms delay.
+                touchAction: "none",
+              }}
+              onPointerDown={() => {
+                gameState === "playing" ? jump() : resetGame();
+              }}
             />
 
-            <div className="absolute inset-0 flex items-center justify-center bg-background/80">
-              <div className="text-center">
-                <div className="font-mono text-sm text-muted-foreground mb-2">{isFine.current ? "Press SPACE to start" : "Tap to start"}</div>
-                <div className="font-mono text-[0.55rem] text-muted-foreground">Jump over obstacles!</div>
+            {/* IDLE */}
+            {gameState === "idle" && (
+              <div className="absolute inset-0 flex items-center justify-center bg-background/80 pointer-events-none">
+                <div className="text-center">
+                  <div className="font-mono text-sm text-muted-foreground mb-2">
+                    {isFine.current ? "Press SPACE to start" : "Tap to start"}
+                  </div>
+                  <div className="font-mono text-[0.55rem] text-muted-foreground">
+                    Jump over obstacles!
+                  </div>
+                </div>
               </div>
-            </div>
+            )}
 
-
-            <div className="absolute inset-0 flex items-center justify-center bg-background/80">
-              <div className="text-center">
-                <div className="font-display text-xl font-bold text-primary mb-1">Game Over</div>
-                <div className="font-mono text-sm text-muted-foreground mb-2">Score: {score}</div>
-                <div className="font-mono text-[0.55rem] text-muted-foreground">{isFine.current ? "Press SPACE to restart" : "Tap to restart"}</div>
+            {/* GAME OVER */}
+            {gameState === "over" && (
+              <div className="absolute inset-0 flex items-center justify-center bg-background/80 pointer-events-none">
+                <div className="text-center">
+                  <div className="font-display text-xl font-bold text-primary mb-1">
+                    Game Over
+                  </div>
+                  <div className="font-mono text-sm text-muted-foreground mb-2">
+                    Score: {score}
+                  </div>
+                  <div className="font-mono text-[0.55rem] text-muted-foreground">
+                    {isFine.current ? "Press SPACE to restart" : "Tap to restart"}
+                  </div>
+                </div>
               </div>
-            </div>
+            )}
 
           </div>
         </motion.div>

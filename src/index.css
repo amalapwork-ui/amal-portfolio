@@ -8,6 +8,10 @@
 .cursor-none * {
   cursor: none !important;
 }
+/* Safety net: if .cursor-none ever leaks onto a touch/coarse device, restore the cursor. */
+@media (pointer: coarse), (hover: none) {
+  .cursor-none * { cursor: auto !important; }
+}
 
 /* ── Scrollbar hide utility (used on project track) ── */
 .scrollbar-hide::-webkit-scrollbar { display: none; }
@@ -46,13 +50,16 @@
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 152 80% 42%;
   }
-html, body, #root {
+/* clip (not hidden) on html — avoids turning <html> into a scroll container,
+   which would break GSAP ScrollTrigger's window-based scroll tracking. */
+html {
   width: 100%;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
-html, body {
-  overscroll-behavior: none;
+body, #root {
+  width: 100%;
+  overflow-x: hidden;
 }
   .dark {
     --background: 160 15% 4%;

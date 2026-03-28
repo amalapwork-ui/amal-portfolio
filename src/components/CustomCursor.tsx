@@ -2,13 +2,13 @@ import { useEffect, useRef } from "react";
 
 /**
  * Premium custom cursor — dot + lagging ring, neon green.
- * Desktop (pointer: fine) only — touch devices render nothing and keep the default cursor.
- * Uses only refs + direct DOM updates (no React state on mousemove → zero re-renders).
+ * Only mounted when Index.tsx confirms (pointer: fine) && (hover: hover).
+ * This internal guard is a defensive fallback — the component should never
+ * reach here on mobile, but the check costs nothing and prevents edge-case leaks.
  */
 const CustomCursor = () => {
-  // Evaluated once at mount; stable for the session.
-  // useRef so it doesn't trigger re-renders and isn't a stale-closure risk in the effect.
-  const isFine = useRef(window.matchMedia("(pointer: fine)").matches);
+  // Defensive fallback — matches Index.tsx's mount guard.
+  const isFine = useRef(window.matchMedia("(pointer: fine) and (hover: hover)").matches);
 
   const dotRef = useRef<HTMLDivElement>(null);
   const outerRef = useRef<HTMLDivElement>(null);

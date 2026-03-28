@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import CustomCursor from "@/components/CustomCursor";
 import Loader from "@/components/Loader";
@@ -18,9 +18,17 @@ const Index = () => {
   const [loaded, setLoaded] = useState(false);
   const onComplete = useCallback(() => setLoaded(true), []);
 
+  // Evaluated once — (pointer: fine) AND (hover: hover) together reliably exclude
+  // touch phones, tablets, and stylus-only devices. useMemo with [] ensures it runs
+  // once at mount (synchronously, before first render) and never re-evaluates.
+  const showCursor = useMemo(
+    () => window.matchMedia("(pointer: fine) and (hover: hover)").matches,
+    []
+  );
+
   return (
     <ThemeProvider>
-      <CustomCursor />
+      {showCursor && <CustomCursor />}
       {!loaded && <Loader onComplete={onComplete} />}
       {loaded && (
         <>
