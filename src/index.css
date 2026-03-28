@@ -1,0 +1,138 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&family=Syne:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Custom cursor (activated by JS adding .cursor-none to <html>) ── */
+.cursor-none * {
+  cursor: none !important;
+}
+
+/* ── Scrollbar hide utility (used on project track) ── */
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+@layer base {
+  :root {
+    --background: 0 0% 98%;
+    --foreground: 160 10% 10%;
+    --card: 0 0% 100%;
+    --card-foreground: 160 10% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 160 10% 10%;
+    --primary: 152 80% 42%;
+    --primary-foreground: 0 0% 2%;
+    --secondary: 160 8% 92%;
+    --secondary-foreground: 160 10% 15%;
+    --muted: 160 6% 90%;
+    --muted-foreground: 160 6% 45%;
+    --accent: 152 80% 42%;
+    --accent-foreground: 0 0% 2%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 160 8% 88%;
+    --input: 160 8% 88%;
+    --ring: 152 80% 42%;
+    --radius: 0.5rem;
+    --neon-glow: 152 80% 50%;
+    --surface-glass: 0 0% 100% / 0.7;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 152 80% 42%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.3% 26.1%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 152 80% 42%;
+  }
+html, body, #root {
+  width: 100%;
+  overflow-x: hidden;
+}
+  .dark {
+    --background: 160 15% 4%;
+    --foreground: 150 10% 92%;
+    --card: 160 12% 7%;
+    --card-foreground: 150 10% 92%;
+    --popover: 160 12% 7%;
+    --popover-foreground: 150 10% 92%;
+    --primary: 152 80% 45%;
+    --primary-foreground: 0 0% 2%;
+    --secondary: 160 10% 12%;
+    --secondary-foreground: 150 10% 85%;
+    --muted: 160 8% 15%;
+    --muted-foreground: 160 6% 55%;
+    --accent: 152 80% 45%;
+    --accent-foreground: 0 0% 2%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 160 10% 15%;
+    --input: 160 10% 15%;
+    --ring: 152 80% 45%;
+    --neon-glow: 152 80% 55%;
+    --surface-glass: 160 15% 6% / 0.8;
+  }
+}
+
+@layer base {
+  * { @apply border-border; }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Space Grotesk', sans-serif;
+    overflow-x: hidden;
+  }
+  ::selection {
+    background: hsl(152 80% 42% / 0.3);
+  }
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: hsl(var(--background)); }
+  ::-webkit-scrollbar-thumb { background: hsl(var(--primary) / 0.3); border-radius: 3px; }
+}
+
+.neon-text {
+  text-shadow: 0 0 10px hsl(var(--primary) / 0.5), 0 0 40px hsl(var(--primary) / 0.2);
+}
+.neon-border {
+  box-shadow: 0 0 15px hsl(var(--primary) / 0.15), inset 0 0 15px hsl(var(--primary) / 0.05);
+}
+.glass {
+  background: hsl(var(--surface-glass));
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+.grid-bg {
+  background-image:
+    linear-gradient(hsl(var(--primary) / 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, hsl(var(--primary) / 0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+.flip-card { perspective: 1200px; }
+.flip-card-inner {
+  transform-style: preserve-3d;
+  transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+.flip-card-front, .flip-card-back {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.flip-card-back { transform: rotateY(180deg); }
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.animate-marquee { animation: marquee 25s linear infinite; }
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+.animate-float { animation: float 6s ease-in-out infinite; }
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px hsl(var(--primary) / 0.2); }
+  50% { box-shadow: 0 0 40px hsl(var(--primary) / 0.4), 0 0 80px hsl(var(--primary) / 0.1); }
+}
+.animate-pulse-glow { animation: pulse-glow 3s ease-in-out infinite; }
