@@ -50,6 +50,10 @@ html, body, #root {
   width: 100%;
   overflow-x: hidden;
 }
+
+html, body {
+  overscroll-behavior: none;
+}
   .dark {
     --background: 160 15% 4%;
     --foreground: 150 10% 92%;

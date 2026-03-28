@@ -9,6 +9,9 @@ import projectSports from "@/assets/project-sports.jpg";
 
 // Register once at module level — safe to call multiple times
 gsap.registerPlugin(ScrollTrigger);
+ScrollTrigger.config({
+  ignoreMobileResize: true,
+});
 
 const projects = [
   {
@@ -152,20 +155,20 @@ const ProjectsSection = () => {
     const track = trackRef.current;
     if (!section || !track) return;
 
-    const isFine = window.matchMedia("(pointer: fine)").matches;
+    // const isFine = window.matchMedia("(pointer: fine)").matches;
 
-    // ── Mobile / touch: native horizontal swipe ──────────────────────────────
-    if (!isFine) {
-      track.style.overflowX = "auto";
-      track.style.scrollbarWidth = "none";
+    // // ── Mobile / touch: native horizontal swipe ──────────────────────────────
+    // if (!isFine) {
+    //   track.style.overflowX = "auto";
+    //   track.style.scrollbarWidth = "none";
 
-      const onScroll = () => {
-        const max = track.scrollWidth - track.clientWidth;
-        setScrollProgress(max > 0 ? track.scrollLeft / max : 0);
-      };
-      track.addEventListener("scroll", onScroll, { passive: true });
-      return () => track.removeEventListener("scroll", onScroll);
-    }
+    //   const onScroll = () => {
+    //     const max = track.scrollWidth - track.clientWidth;
+    //     setScrollProgress(max > 0 ? track.scrollLeft / max : 0);
+    //   };
+    //   track.addEventListener("scroll", onScroll, { passive: true });
+    //   return () => track.removeEventListener("scroll", onScroll);
+    // }
 
     // ── Guard: if all cards already fit in the viewport, no horizontal scroll needed ──
     if (track.scrollWidth <= window.innerWidth) return;

@@ -165,7 +165,7 @@ const DinoGame = () => {
               className="bg-background max-w-full"
               style={{ aspectRatio: `${CANVAS_W}/${CANVAS_H}` }}
               onClick={() => gameState === "playing" ? jump() : resetGame()}
-              onTouchStart={() => {
+              onPointerDown={() => {
                 gameState === "playing" ? jump() : resetGame();
               }}
             />
