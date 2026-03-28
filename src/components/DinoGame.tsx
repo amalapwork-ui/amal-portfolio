@@ -157,35 +157,37 @@ const DinoGame = () => {
             Code <span className="text-primary">Runner</span>
           </h3>
 
-          <div className="relative inline-block border border-border neon-border overflow-hidden">
+
+          <div
+            className="relative inline-block border border-border neon-border overflow-hidden"
+            onPointerDown={() => {
+              gameState === "playing" ? jump() : resetGame();
+            }}
+          >
             <canvas
               ref={canvasRef}
               width={CANVAS_W}
               height={CANVAS_H}
               className="bg-background max-w-full"
               style={{ aspectRatio: `${CANVAS_W}/${CANVAS_H}` }}
-              onClick={() => gameState === "playing" ? jump() : resetGame()}
-              onPointerDown={() => {
-                gameState === "playing" ? jump() : resetGame();
-              }}
             />
-            {gameState === "idle" && (
-              <div className="absolute inset-0 flex items-center justify-center bg-background/80">
-                <div className="text-center">
-                  <div className="font-mono text-sm text-muted-foreground mb-2">{isFine.current ? "Press SPACE to start" : "Tap to start"}</div>
-                  <div className="font-mono text-[0.55rem] text-muted-foreground">Jump over obstacles!</div>
-                </div>
+
+            <div className="absolute inset-0 flex items-center justify-center bg-background/80">
+              <div className="text-center">
+                <div className="font-mono text-sm text-muted-foreground mb-2">{isFine.current ? "Press SPACE to start" : "Tap to start"}</div>
+                <div className="font-mono text-[0.55rem] text-muted-foreground">Jump over obstacles!</div>
               </div>
-            )}
-            {gameState === "over" && (
-              <div className="absolute inset-0 flex items-center justify-center bg-background/80">
-                <div className="text-center">
-                  <div className="font-display text-xl font-bold text-primary mb-1">Game Over</div>
-                  <div className="font-mono text-sm text-muted-foreground mb-2">Score: {score}</div>
-                  <div className="font-mono text-[0.55rem] text-muted-foreground">{isFine.current ? "Press SPACE to restart" : "Tap to restart"}</div>
-                </div>
+            </div>
+
+
+            <div className="absolute inset-0 flex items-center justify-center bg-background/80">
+              <div className="text-center">
+                <div className="font-display text-xl font-bold text-primary mb-1">Game Over</div>
+                <div className="font-mono text-sm text-muted-foreground mb-2">Score: {score}</div>
+                <div className="font-mono text-[0.55rem] text-muted-foreground">{isFine.current ? "Press SPACE to restart" : "Tap to restart"}</div>
               </div>
-            )}
+            </div>
+
           </div>
         </motion.div>
       </div>
