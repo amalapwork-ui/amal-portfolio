@@ -87,7 +87,7 @@ const ContactSection = () => {
       return;
     }
 
-    const phone = "917356790062";
+    const phone = "919495077752";
 
     const text = `Hello Amal,%0A
 Name: ${name}%0A
