@@ -47,15 +47,11 @@ const DinoGame = () => {
 
     let animId: number;
     const g = gameRef.current;
-    let lastTime = performance.now();
-    
     const isDark = document.documentElement.classList.contains("dark");
     const fgColor = isDark ? "#d4e4d0" : "#1a2e1a";
     const accentColor = isDark ? "hsl(152,80%,45%)" : "hsl(152,80%,42%)";
 
-    const loop = (time: number) => {
-  const dt = (time - lastTime) / 16.67;
-  lastTime = time;
+    const loop = () => {
       ctx.clearRect(0, 0, CANVAS_W, CANVAS_H);
       g.frame++;
 
@@ -74,8 +70,8 @@ const DinoGame = () => {
       }
 
       // Physics
-      g.velY += GRAVITY * dt;
-g.dinoY += g.velY * dt;
+      g.velY += GRAVITY;
+      g.dinoY += g.velY;
       if (g.dinoY > GROUND_Y - DINO_H) {
         g.dinoY = GROUND_Y - DINO_H;
         g.velY = 0;
@@ -89,7 +85,7 @@ g.dinoY += g.velY * dt;
       ctx.fillRect(78, g.dinoY + 6, 6, 6);
 
       // Spawn obstacles
-      if (Math.random() < 0.02 * dt) {
+      if (g.frame % Math.max(100 - Math.floor(g.speed * 5), 60) === 0) {
         const h = 20 + Math.random() * 30;
         g.obstacles.push({ x: CANVAS_W, width: 15 + Math.random() * 10, height: h, passed: false });
       }
@@ -97,7 +93,7 @@ g.dinoY += g.velY * dt;
       // Update obstacles
       g.obstacles = g.obstacles.filter((o) => o.x > -50);
       g.obstacles.forEach((o) => {
-        o.x -= g.speed * dt;
+        o.x -= g.speed;
 
         ctx.fillStyle = fgColor;
         ctx.fillRect(o.x, GROUND_Y - o.height, o.width, o.height);
@@ -129,7 +125,7 @@ g.dinoY += g.velY * dt;
       if (gameState === "playing") animId = requestAnimationFrame(loop);
     };
 
-    animId = requestAnimationFrame(loop);
+    loop();
     return () => cancelAnimationFrame(animId);
   }, [gameState]);
 
