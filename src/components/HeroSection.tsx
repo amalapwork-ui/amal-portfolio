@@ -209,14 +209,14 @@ const HeroSection = () => {
                     download
                     className="block px-4 py-1 text-sm hover:bg-primary hover:text-primary-foreground"
                   >
-                    Developer Resume
+                    Full Stack Developer Resume
                   </a>
                   <a
-                    href="/Amal_AP_AI_Engineer.pdf"
+                    href="/Amal_A_P_AI_Engineer.pdf"
                     download
                     className="block px-4 py-1 text-sm hover:bg-primary hover:text-primary-foreground"
                   >
-                    AI Resume
+                    AI Engineer Resume
                   </a>
                 </div>
               )}

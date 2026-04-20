@@ -13,7 +13,7 @@ Theme state (dark/light) lives in `ThemeProvider.tsx` via Context API and persis
 `ThemeProvider` toggles the `.dark` class on `document.documentElement` — this is how Tailwind's dark-mode variant activates.
 
 Two non-obvious shared components:
-- `CustomCursor.tsx` — replaces the system cursor site-wide; the `cursor-none` CSS class in `index.css` hides the default cursor
+- `CustomCursor.tsx` — replaces the system cursor on pointer/hover devices only (excluded on touch/mobile via `window.matchMedia("(pointer: fine) and (hover: hover)")`); the `cursor-none` CSS class in `index.css` hides the default cursor
 - `DinoGame.tsx` — an easter egg mini-game surfaced somewhere in the UI; keep it self-contained with no external state dependencies
 
 ## Build & Development Commands

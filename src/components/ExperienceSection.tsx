@@ -20,10 +20,10 @@ const ExperienceSection = () => (
           <div className="flex-1">
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-4">
               <div>
-                <h3 className="font-display text-xl font-bold">Full Stack Development Intern</h3>
+                <h3 className="font-display text-xl font-bold">Python Full Stack Development with Data Science and Generative AI</h3>
                 <p className="font-mono text-sm text-primary">Faith Infotech Academy</p>
               </div>
-              <span className="font-mono text-[0.65rem] text-muted-foreground tracking-widest mt-2 lg:mt-0">SEPT 2025 — FEB 2026</span>
+              <span className="font-mono text-[0.65rem] text-muted-foreground tracking-widest mt-2 lg:mt-0">SEPT 2025 — PRESENT</span>
             </div>
             <ul className="space-y-3 text-sm text-muted-foreground leading-relaxed">
               {[
